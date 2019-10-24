@@ -1,0 +1,17 @@
+.form {
+    padding: 2rem;
+    font-size: 1.5rem;
+}
+label {
+    display: block;
+}
+.form > * {
+    width: 100%;
+    margin: 0; 
+    border: 1px;
+    font-family: "PT Serif", serif;
+    line-height: 2.2rem;
+}
+.form__message {
+    resize: none;
+}
