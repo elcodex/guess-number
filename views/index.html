@@ -1,0 +1,29 @@
+<!doctype HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Hello page</title>
+        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="form.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Hello!</h1>
+            <div class="display-messages">
+                <ul>
+                    <li class="display-server-message">
+                        <span class="author">server</span>: <span class="text">Hello!</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="user-inputs">
+                <form class="form" method="post">
+                    <label for="user-message">Message:</label>
+                    <textarea id="user-message" class="form__message" name="message" rows="3"></textarea>
+                    <button class="form__button">Send</button>
+                </form>
+            </div>
+        </div>
+        <script src="index.js"></script> 
+    </body>
+</html>
