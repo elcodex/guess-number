@@ -7,13 +7,16 @@ document.querySelector('.form__button').addEventListener('click', e => {
     let xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.onerror = _ => console.log('error', xmlHttpRequest.statusText);
     xmlHttpRequest.onloadstart = _ => console.log('load starts');
-    xmlHttpRequest.onloadend = _ => console.log('load ends', xmlHttpRequest.statusText);
+    xmlHttpRequest.onloadend = _ => {
+        console.log('load ends', xmlHttpRequest.statusText);
+        console.log(xmlHttpRequest.responseText);
+        displayMessage(xmlHttpRequest.responseText, 'server');
+    }
     xmlHttpRequest.onload = _ => console.log('load', xmlHttpRequest.statusText);
 
     xmlHttpRequest.open('post', '/');
     xmlHttpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xmlHttpRequest.send(`message=${data.get('message')}`);
-
 });
 
 let displayMessage = (text, from) => {
