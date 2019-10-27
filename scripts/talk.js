@@ -41,7 +41,46 @@ let game = (from, to) => {
     }
     let allAnswers = _ => ANSWERS;
     return {
-        answer: answer,
-        start: start
+        answer,
+        start,
+        end,
+        allAnswers,
     }
 }
+let myGame = game(1, 100);
+
+exports.serverAnswer = request => {
+    let action = parseRequest(request);
+    let answer = '';
+    if ('command' in action) {
+        if (action.command === 'hello') {  //hello
+            answer = "Hello! Let's play a game. I think of the number from 1 to 100 and you try to guess it.";
+            answer += "\nTo start the game type 'start'";  
+        }
+        else if (action.command === 'start') {
+            myGame.start();
+            answer = "Great! Now you type your guess and i will give you some hints";
+        }
+        else if (action.command === 'number') {
+            const gameAnswer = myGame.answer(action.number);
+            console.log(action.number, gameAnswer);
+            if (gameAnswer === myGame.allAnswers().TOO_SMALL) {
+                answer = 'Yours number is smaller than my number.';
+            } else if (gameAnswer === myGame.allAnswers().TOO_BIG) {
+                answer = 'Your guess is too big. Try another number.'
+            } else if (gameAnswer === myGame.allAnswers().RIGHT) {
+                const gameResults = myGame.end();
+                answer = 'You got it! Congrats!';
+                answer += '\nTries: ' + gameResults.triesCount + '. Number: ' + gameResults.number;
+            }
+        }
+        else if (action.command === 'end') {
+            const gameResults = myGame.end();
+            answer = 'Ok. The number was ' + gameResults.number;
+            answer += "\nLet's try again.";
+        }
+    }
+    return answer; 
+}
+
+
