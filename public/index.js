@@ -37,5 +37,5 @@ let displayMessage = (text, from) => {
     let display = document.querySelector('.display-messages');
     display.appendChild(messageContainer);
     display.scrollTop = display.scrollHeight;
-    console.log(display.getElementsByClassName.height, display.scrollHeight);
+    //console.log(display.getElementsByClassName.height, display.scrollHeight);
 }
