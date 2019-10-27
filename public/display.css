@@ -1,0 +1,21 @@
+.display__list {
+    padding: 0;
+    margin: 0;
+}
+.display__list > li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 1rem;
+}
+.display__server-message {
+    color: hsl(160, 100%, 40%);
+}
+.display__you-message {
+    font-style: italic;
+    color: hsl(0, 0%, 70%);
+    text-align: right;
+}
+.message__author {
+    text-decoration: underline;
+    font-weight: bold;
+}
