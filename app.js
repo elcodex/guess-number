@@ -1,3 +1,6 @@
+//import {serverAnswer} from './scripts/talk.js'; 
+const talk = require('./scripts/talk.js');
+
 const express = require('express');
 const consolidate = require('consolidate');
 const bodyParser = require('body-parser');
@@ -14,8 +17,10 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => res.render('index.html'));
 
 app.post('/', function(req, res) {
-    //console.log(req);
-    res.sendStatus(200);
+    console.log('request',req.body);
+    const answer = talk.serverAnswer(req);
+    console.log(req.body.message, answer);
+    res.send(answer);
 });
 
 app.listen(port, _ => console.log(`listening on port ${port}`));
