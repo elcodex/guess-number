@@ -9,7 +9,6 @@ document.querySelector('.form__button').addEventListener('click', e => {
     xmlHttpRequest.onloadstart = _ => console.log('load starts');
     xmlHttpRequest.onloadend = _ => {
         console.log('load ends', xmlHttpRequest.statusText);
-        console.log(xmlHttpRequest.responseText);
         displayMessage(xmlHttpRequest.responseText, 'server');
     }
     xmlHttpRequest.onload = _ => console.log('load', xmlHttpRequest.statusText);
@@ -20,8 +19,8 @@ document.querySelector('.form__button').addEventListener('click', e => {
 });
 
 let displayMessage = (text, from) => {
-    let messageContainer = document.createElement('div');
-    messageContainer.classList.add(`${from}-message`);
+    let messageContainer = document.createElement('li');
+    messageContainer.classList.add(`display__${from}-message`);
     let messageTag = document.createElement('p');
     let authorTag = document.createElement('span');
     authorTag.classList.add('message__author');
@@ -34,8 +33,7 @@ let displayMessage = (text, from) => {
     messageTag.appendChild(textTag);
     messageContainer.appendChild(messageTag);
 
-    let display = document.querySelector('.display-messages');
+    let display = document.querySelector('.display__list');
     display.appendChild(messageContainer);
-    display.scrollTop = display.scrollHeight;
-    //console.log(display.getElementsByClassName.height, display.scrollHeight);
+    document.querySelector('.display').scrollTop = display.scrollHeight;
 }
