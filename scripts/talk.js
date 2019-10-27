@@ -16,22 +16,30 @@ let parseRequest = request => {
     return {command: DO_NOTHING}        
 }
 
+//guess the number
 let game = (from, to) => {
-    let number = from + Math.floor(Math.random() * (to - from));
+    let number = from; //from + Math.floor(Math.random() * (to - from));
+    let triesCount = 0;
+    const ANSWERS = {TOO_SMALL: 'too small', TOO_BIG: 'too big', RIGHT: 'right'};
 
     let answer = userNumber => {
-        const TOO_SMALL = 'too small';
-        const TOO_BIG = 'too big';
-        const RIGHT = 'right';
+       // console.log('number', number, userNumber);
+        triesCount++;
         if (userNumber < number)
-            return TOO_SMALL;
+            return ANSWERS.TOO_SMALL;
         if (userNumber > number)
-            return TOO_BIG;
-        return RIGHT;    
+            return ANSWERS.TOO_BIG;
+        return ANSWERS.RIGHT;    
     }
     let start = _ => {
         number = from + Math.floor(Math.random() * (to - from));
+        triesCount = 0;
+       // console.log('start number:', number);
     }
+    let end = _ => {
+        return {number, triesCount}
+    }
+    let allAnswers = _ => ANSWERS;
     return {
         answer: answer,
         start: start
