@@ -21,17 +21,15 @@ document.querySelector('.form__button').addEventListener('click', e => {
 let displayMessage = (text, from) => {
     let messageContainer = document.createElement('li');
     messageContainer.classList.add(`display__${from}-message`);
-    let messageTag = document.createElement('p');
     let authorTag = document.createElement('span');
     authorTag.classList.add('message__author');
     authorTag.innerText = from;
     let textTag = document.createElement('span');
     textTag.classList.add('message__text');
     textTag.innerText = text;
-    messageTag.appendChild(authorTag);
-    messageTag.innerText += ': ';
-    messageTag.appendChild(textTag);
-    messageContainer.appendChild(messageTag);
+    messageContainer.appendChild(authorTag);
+    messageContainer.innerHTML += ': ';
+    messageContainer.appendChild(textTag);
 
     let display = document.querySelector('.display__list');
     display.appendChild(messageContainer);

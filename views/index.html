@@ -3,23 +3,25 @@
     <head>
         <meta charset="utf-8">
         <title>Hello page</title>
+        <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="form.css">
         <link rel="stylesheet" href="display.css">
     </head>
     <body>
         <div class="container">
-            <h1>Hello!</h1>
+            <header style="height: 5%;"></header>
             <div class="display">
                 <ul class="display__list">
                     <li class="display__server-message">
-                        <span class="message__author">server</span>: <span class="message__text">Hello!</span>
+                        <span class="message__author">server</span>: 
+                        <span class="message__text">Hello! Type 'hello' to start conversation with server.</span>
                     </li>
                 </ul>
             </div>
             <div class="user-inputs">
                 <form class="form" method="post">
-                    <label for="user-message">Message:</label>
+                    <!--<label for="user-message">Message:</label>-->
                     <textarea id="user-message" class="form__message" name="message" rows="3"></textarea>
                     <button class="form__button">Send</button>
                 </form>
