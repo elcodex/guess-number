@@ -5,6 +5,11 @@ const COMMANDS = ['hello', 'start', 'end'];
 const DO_NOTHING = 'do nothing';
 const NUMBER = 'number';
 
+const fs = require('fs');
+const serverAnswersData = fs.readFileSync('data/answers.json', 'utf-8');
+const serverAnswers = JSON.parse(serverAnswersData);
+//console.log(serverAnswers);
+
 let parseRequest = request => {
     const text = request.body.message.split(/ |\n/, 1)[0].toLowerCase();
     const n = Number(text);
@@ -17,19 +22,18 @@ let parseRequest = request => {
 
 exports.serverAnswer = request => {
     let action = parseRequest(request);
-    let answer = '';
+    let answer = serverAnswers.default;
     const sessionId = request.session.userId;
     if ('command' in action) {
-        if (action.command === 'hello') {  //hello
-            answer = "Hello! Let's play a game. I think of the number from 1 to 100 and you try to guess it.";
-            answer += "\nTo start the game type 'start'";
+        if (action.command === 'hello') {
+            answer = serverAnswers.hello;
             appStore.addKey(sessionId);
         }
         else if (action.command === 'start') {
             const number = game.start(1, 100);
             appStore.addParam(sessionId, {key: 'number', value: number});
             appStore.addParam(sessionId, {key: 'tries', value: 0});
-            answer = "Great! Now you type your guess and i will give you some hints";
+            answer = serverAnswers.start;
         }
         else if (action.command === 'number') {
             const tries = appStore.getParam(sessionId, 'tries');
@@ -38,16 +42,16 @@ exports.serverAnswer = request => {
             appStore.addParam(sessionId, {key: 'tries', value: gameAnswer.tries});
             console.log(action.number, guessNumber, tries, gameAnswer);
             if (gameAnswer.answer === game.allAnswers().TOO_SMALL) {
-                answer = 'Yours number is smaller than my number.';
+                answer = serverAnswers['too small'];
             } else if (gameAnswer.answer === game.allAnswers().TOO_BIG) {
-                answer = 'Your guess is too big. Try another number.'
+                answer = serverAnswers['too big'];
             } else if (gameAnswer.answer === game.allAnswers().RIGHT) {
                 const gameResults = {
                     number: appStore.getParam(sessionId, 'number'),
                     tries: appStore.getParam(sessionId, 'tries'),
                 }
                 appStore.clearKey(sessionId);
-                answer = 'You got it! Congrats!';
+                answer = serverAnswers['right'];
                 answer += '\nTries: ' + gameResults.tries + '. Number: ' + gameResults.number;
             }
         }
@@ -57,8 +61,8 @@ exports.serverAnswer = request => {
                 tries: appStore.getParam(sessionId, 'tries'),
             }
             appStore.clearKey(sessionId);
-            answer = 'Ok. The number was ' + gameResults.number;
-            answer += "\nLet's try again.";
+            answer = serverAnswers.end[0] + gameResults.number;
+            answer += serverAnswers.end[1];
         }
     }
     console.log(appStore.getInfo(sessionId));
