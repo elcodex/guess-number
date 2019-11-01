@@ -13,5 +13,6 @@
   "even": "My number is even",
   "not even": "Your number is not even",
   "divide by": "My number is divided by ",
+  "not start yet": "I don't think of the number yet. Type 'start' to begin the game.",
   "default": "..."
 }
