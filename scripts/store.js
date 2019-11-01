@@ -2,7 +2,7 @@ let store = new Map();
 
 exports.getInfo = (sessionId, firstVisit) => {
     if (!store.has(sessionId)) {
-       store.set(sessionId, {number: -1}); 
+       store.set(sessionId, {}); 
     }
     return store.get(sessionId);
 }
@@ -19,7 +19,7 @@ exports.addParam = (sessionId, {key, value}) => {
 }
 exports.addKey = (sessionId) => {
     if (!store.has(sessionId)) {
-        store.set(sessionId, {number: -1});
+        store.set(sessionId, {});
     }
 }
 exports.getParam = (sessionId, param) => {
@@ -29,5 +29,5 @@ exports.getParam = (sessionId, param) => {
     return undefined;
 }
 exports.clearKey = (sessionId) => {
-    store.set(sessionId, {number: -1});
+    store.set(sessionId, {});
 }

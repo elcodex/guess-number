@@ -68,15 +68,15 @@ exports.serverAnswer = request => {
                     const divider = game.dividedBy(guessNumber);
                     answer = serverAnswers['divide by'] + divider.toString();
                 }
-            } else if (action.command === 'number' && appStore.getParam(sessionId, 'number') === undefined) {
-                answer = serverAnswers['not start yet'];    
             } else if (gameAnswer.answer === game.allAnswers().TOO_SMALL) {
                 answer = serverAnswers['too small'];
             } else if (gameAnswer.answer === game.allAnswers().TOO_BIG) {
                 answer = serverAnswers['too big'];
             }
-        }
-        else if (action.command === 'end') {
+        } else if ((action.command === 'number' || action.command === 'end') && 
+                   appStore.getParam(sessionId, 'number') === undefined) {
+            answer = serverAnswers['not start yet'];    
+        } else if (action.command === 'end') {
             const gameResults = {
                 number: appStore.getParam(sessionId, 'number'),
                 tries: appStore.getParam(sessionId, 'tries'),
@@ -89,5 +89,3 @@ exports.serverAnswer = request => {
     console.log(appStore.getInfo(sessionId));
     return answer; 
 }
-
-
