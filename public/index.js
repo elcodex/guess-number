@@ -19,7 +19,9 @@ let displayAndPost = _ => {
     displayMessage(messageText, 'client');
     postMessage(messageText);
 
-    document.querySelector('.answer-form__message').value = "";
+    let formMessageTag = document.querySelector('.answer-form__message');
+    formMessageTag.value = "";
+    formMessageTag.focus();
 }
 
 let postMessage = message => {
