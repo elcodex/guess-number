@@ -1,9 +1,6 @@
 const game = require('./game.js');
 const appStore = require('./store.js');
 
-const COMMANDS = ['hello', 'start', 'end'];
-const DO_NOTHING = 'do nothing';
-const NUMBER = 'number';
 const FROM = 1;
 const TO = 100;
 
@@ -11,72 +8,36 @@ const fs = require('fs');
 const serverAnswersData = fs.readFileSync('data/answers.json', 'utf-8');
 const serverAnswers = JSON.parse(serverAnswersData);
 
-let parseRequest = request => {
-    const text = request.body.message.split(/ |\n/, 1)[0].toLowerCase();
-    const n = Number(text);
-    if (COMMANDS.includes(text))
-        return {command: text};
-    if (!isNaN(n))
-        return {command: NUMBER, number: n}
-    return {command: DO_NOTHING}        
-}
+const USER_COMMANDS = {HELLO: 'hello', START: 'start', END: 'end'};
+const COMMAND_DEFAULT = 'do nothing';
+const COMMAND_NUMBER = 'number';
 
-exports.serverAnswer = request => {
-    let action = parseRequest(request);
-    let answer = serverAnswers.default;
-    const sessionId = request.session.userId;
-    if ('command' in action) {
-        if (action.command === 'hello') {
-            answer = serverAnswers.hello;
-            appStore.addKey(sessionId);
-        } else if (action.command === 'start') {
-            const number = game.start(FROM, TO);
-            appStore.addParam(sessionId, {key: 'number', value: number});
-            appStore.addParam(sessionId, {key: 'tries', value: 0});
-            answer = serverAnswers.start;
-        } else if (action.command === 'number' && appStore.getParam(sessionId, 'number') !== undefined) {
-            let tries = appStore.getParam(sessionId, 'tries');
-            const guessNumber = appStore.getParam(sessionId, 'number');
-            const gameAnswer = game.turn(action.number, guessNumber, tries);
-            appStore.addParam(sessionId, {key: 'tries', value: gameAnswer.tries});
-            tries = appStore.getParam(sessionId, 'tries');
-            if (gameAnswer.answer === game.allAnswers().RIGHT) {
-                appStore.clearKey(sessionId);
-                answer = serverAnswers['right'];
-                answer += '\nTries: ' + tries + '. Number: ' + guessNumber;
-            } else if (action.number < FROM || action.number >= TO) {
-                answer = serverAnswers['out of range'];
-            } else if (tries % 2 === 0) {
-                if (appStore.getParam(sessionId, 'isPrime') === undefined) {
-                    const isPrime = game.isPrime(guessNumber);
-                    appStore.addParam(sessionId, {key: 'isPrime', value: isPrime});
-                    if (isPrime) {
-                        answer = serverAnswers.prime;
-                    } else {
-                        const divider = game.dividedBy(guessNumber);
-                        answer = serverAnswers['divide by'] + divider.toString();
-                    }
-                } else if (appStore.getParam(sessionId, 'isEven') === undefined) {
-                    const isEven = game.isEven(guessNumber);
-                    appStore.addParam(sessionId, {key: 'isEven', value: isEven});
-                    if (isEven) {
-                        answer = serverAnswers.even;
-                    } else {
-                        answer = serverAnswers.odd;
-                    }
-                } else {
-                    const divider = game.dividedBy(guessNumber);
-                    answer = serverAnswers['divide by'] + divider.toString();
-                }
-            } else if (gameAnswer.answer === game.allAnswers().TOO_SMALL) {
-                answer = serverAnswers['too small'];
-            } else if (gameAnswer.answer === game.allAnswers().TOO_BIG) {
-                answer = serverAnswers['too big'];
-            }
-        } else if ((action.command === 'number' || action.command === 'end') && 
-                   appStore.getParam(sessionId, 'number') === undefined) {
-            answer = serverAnswers['not start yet'];    
-        } else if (action.command === 'end') {
+let extractCommandFromRequest = request => {
+    const command = request.body.message.split(/ |\n|\r|\r\n/, 1)[0].toLowerCase();
+
+    if (Object.values(USER_COMMANDS).includes(command))
+        return {command};
+
+    const number = Number(command);
+    if (!isNaN(number))
+        return {command: COMMAND_NUMBER, number};
+
+    return {command: COMMAND_DEFAULT};
+}
+let executeCommand = (sessionId, commandNumber = 0) => {
+    let executeCommandHello = _ => {
+        appStore.addKey(sessionId);
+        return serverAnswers.hello;
+    }
+    let executeCommandStart = _ => {
+        const number = game.start(FROM, TO);
+        appStore.addParam(sessionId, {key: 'number', value: number});
+        appStore.addParam(sessionId, {key: 'tries', value: 0});
+        return serverAnswers.start;
+    }
+    let executeCommandEnd = _ => {
+        let answer = serverAnswers['not start yet'];
+        if (appStore.getParam(sessionId, 'number')) {
             const gameResults = {
                 number: appStore.getParam(sessionId, 'number'),
                 tries: appStore.getParam(sessionId, 'tries'),
@@ -85,7 +46,64 @@ exports.serverAnswer = request => {
             answer = serverAnswers.end[0] + gameResults.number;
             answer += serverAnswers.end[1];
         }
+        return answer;
     }
-    console.log(appStore.getInfo(sessionId));
-    return answer; 
+    let executeCommandNumber = _ => {
+        let tries = appStore.getParam(sessionId, 'tries');
+        const guessNumber = appStore.getParam(sessionId, 'number');
+        
+        if (!guessNumber) return serverAnswers['not start yet'];
+
+        const gameAnswer = game.turn(commandNumber, guessNumber, tries);
+        appStore.addParam(sessionId, {key: 'tries', value: gameAnswer.tries});
+        tries = appStore.getParam(sessionId, 'tries');
+
+        let answer = '';
+        
+        if (gameAnswer.answer === game.allAnswers().RIGHT) {
+            appStore.clearKey(sessionId);
+            answer = serverAnswers['right'];
+            answer += '\r\nTries: ' + tries + '. Number: ' + guessNumber;
+        }
+        else {
+            if (tries % 2 === 0) {
+                if (appStore.getParam(sessionId, 'isPrime') === undefined) {
+                    const isPrime = game.isPrime(guessNumber);
+                    appStore.addParam(sessionId, {key: 'isPrime', value: isPrime});
+                    if (isPrime) {
+                        answer = serverAnswers.prime + '\r\n';
+                    }
+                }
+                if (typeof appStore.getParam(sessionId, 'isPrime') === 'boolean' && 
+                    !appStore.getParam(sessionId, 'isPrime')) {
+                    
+                    const divider = game.dividedBy(guessNumber);
+                    answer = serverAnswers['divide by'] + divider.toString() + '\r\n';
+                }
+            }
+            if (gameAnswer.answer === game.allAnswers().TOO_SMALL) {
+                answer += serverAnswers['too small'];
+            } 
+            else if (gameAnswer.answer === game.allAnswers().TOO_BIG) {
+                answer += serverAnswers['too big'];
+            }
+        }
+        return answer;
+    }
+    let executeDefaultCommand = _ => serverAnswers.default;
+    
+    const answers = {};
+    answers[USER_COMMANDS.HELLO] = executeCommandHello;
+    answers[USER_COMMANDS.START] = executeCommandStart;
+    answers[USER_COMMANDS.END] = executeCommandEnd;
+    answers[COMMAND_NUMBER] = executeCommandNumber;
+    answers[COMMAND_DEFAULT] = executeDefaultCommand;
+    return answers;
+}
+
+exports.getServerAnswer = request => {
+    let userCommand = extractCommandFromRequest(request);
+    const sessionId = request.session.userId;
+
+    return executeCommand(sessionId, userCommand.number)[userCommand.command](); 
 }
