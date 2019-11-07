@@ -1,21 +1,16 @@
 document.querySelector('.answer-form__button').addEventListener('click', e => {
-    const data = new FormData(document.querySelector('.answer-form'));
-    
-    displayMessage(data.get('message'), 'client');   
     e.preventDefault();
+    
+    const data = new FormData(document.querySelector('.answer-form'));
+    const messageText = data.get('message').trim();
+    displayMessage(messageText, 'client');
    
-    let xmlHttpRequest = new XMLHttpRequest();
-    xmlHttpRequest.onerror = _ => console.log('error', xmlHttpRequest.statusText);
-    xmlHttpRequest.onloadstart = _ => console.log('load starts');
-    xmlHttpRequest.onloadend = _ => {
-        console.log('load ends', xmlHttpRequest.statusText);
-        displayMessage(xmlHttpRequest.responseText, 'server');
-    }
-    xmlHttpRequest.onload = _ => console.log('load', xmlHttpRequest.statusText);
-
-    xmlHttpRequest.open('post', '/');
-    xmlHttpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xmlHttpRequest.send(`message=${data.get('message')}`);
+    let xhr = new XMLHttpRequest();
+    xhr.onerror = _ => console.log('error', xhr.statusText);
+    xhr.onloadend = _ => displayMessage(xhr.responseText, 'server');
+    xhr.open('post', '/');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(`message=${messageText.substring(0, 20)}`);
 });
 
 let displayMessage = (text, from) => {
