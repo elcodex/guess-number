@@ -6,9 +6,10 @@
     list-style-type: none;
     padding: 0.3rem 1rem;
     width: 70%;
+    overflow-wrap: break-word;
 }
 .message-history__server-message {
-    color: hsl(160, 100%, 40%);
+    color: var(--server-message-color);
     margin-left: 0;
     margin-right: auto;
 }
