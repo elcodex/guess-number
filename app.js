@@ -1,5 +1,6 @@
-//import {serverAnswer} from './scripts/talk.js'; 
 const talk = require('./scripts/talk.js');
+
+const PORT = 80;
 
 const express = require('express');
 const consolidate = require('consolidate');
@@ -7,7 +8,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 
 const app = express();
-const port = 3001;
 
 app.engine('html', consolidate.handlebars);
 app.set('view engine', 'handlebars');
@@ -21,15 +21,13 @@ app.use(session({
     saveUninitialized: false,
 }));
 
-//app.get('/', (req, res) => res.send('Hello from server!'));
 app.get('/', (req, res) => res.render('index.html'));
 
 app.post('/', function(req, res) {
     if (!req.session.userId) req.session.userId = req.session.id;
-    console.log('sessionId', req.session.userId, req.sessionID);
-    const answer = talk.serverAnswer(req);
+    const answer = talk.getServerAnswer(req);
     console.log(req.body.message, answer);
     res.send(answer);
 });
 
-app.listen(port, _ => console.log(`listening on port ${port}`));
+app.listen(port, _ => console.log(`listening on port ${PORT}`));
