@@ -1,18 +1,22 @@
-.display__list {
+.message-history__list {
     padding: 0;
     margin: 0;
 }
-.display__list > li {
+.message-history__list > li {
     list-style-type: none;
-    margin: 0;
     padding: 0.3rem 1rem;
+    width: 70%;
 }
-.display__server-message {
+.message-history__server-message {
     color: hsl(160, 100%, 40%);
+    margin-left: 0;
+    margin-right: auto;
 }
-.display__you-message {
+.message-history__client-message {
     font-style: italic;
     text-align: right;
+    margin-left: auto;
+    margin-right: 0;
 }
 .message__author {
     text-decoration: underline;

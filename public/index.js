@@ -1,7 +1,7 @@
-document.querySelector('.form__button').addEventListener('click', e => {
-    const data = new FormData(document.querySelector('.form'));
+document.querySelector('.answer-form__button').addEventListener('click', e => {
+    const data = new FormData(document.querySelector('.answer-form'));
     
-    displayMessage(data.get('message'), 'you');   
+    displayMessage(data.get('message'), 'client');   
     e.preventDefault();
    
     let xmlHttpRequest = new XMLHttpRequest();
@@ -19,19 +19,21 @@ document.querySelector('.form__button').addEventListener('click', e => {
 });
 
 let displayMessage = (text, from) => {
-    let messageContainer = document.createElement('li');
-    messageContainer.classList.add(`display__${from}-message`);
     let authorTag = document.createElement('span');
     authorTag.classList.add('message__author');
-    authorTag.innerText = from;
+    authorTag.innerText = from === 'client' ? 'you' : from;
+
     let textTag = document.createElement('span');
     textTag.classList.add('message__text');
     textTag.innerText = text;
+
+    let messageContainer = document.createElement('li');
+    messageContainer.classList.add(`message-history__${from}-message`);
     messageContainer.appendChild(authorTag);
     messageContainer.innerHTML += ': ';
     messageContainer.appendChild(textTag);
 
-    let display = document.querySelector('.display__list');
+    let display = document.querySelector('.message-history__list');
     display.appendChild(messageContainer);
-    document.querySelector('.display').scrollTop = display.scrollHeight;
+    document.querySelector('.message-history').scrollTop = display.scrollHeight;
 }

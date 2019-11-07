@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Hello page</title>
+        <title>Guess game</title>
         <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="form.css">
@@ -10,20 +10,21 @@
     </head>
     <body>
         <div class="container">
-            <header style="height: 5%;"></header>
-            <div class="display">
-                <ul class="display__list">
-                    <li class="display__server-message">
+            <header></header>
+            <div class="message-history">
+                <ul class="message-history__list">
+                    <li class="message-history__server-message">
                         <span class="message__author">server</span>: 
-                        <span class="message__text">Hello! Type 'hello' to start conversation with server.</span>
+                        <span class="message__text">
+                            Hello! Type 'hello' to start conversation with server.
+                        </span>
                     </li>
                 </ul>
             </div>
             <div class="user-inputs">
-                <form class="form" method="post">
-                    <!--<label for="user-message">Message:</label>-->
-                    <textarea id="user-message" class="form__message" name="message" rows="3"></textarea>
-                    <button class="form__button">Send</button>
+                <form class="answer-form" method="post">
+                    <textarea class="answer-form__message" name="message" rows="2"></textarea>
+                    <button class="answer-form__button">Send</button>
                 </form>
             </div>
         </div>

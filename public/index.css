@@ -9,7 +9,7 @@ html {
 }
 body {
     --background-color: hsl(0, 0%, 10%); 
-    --text-color:hsl(37, 0%, 80%);
+    --text-color: hsl(37, 0%, 80%);
     height: 100%;
     background-color: var(--background-color);
     color: var(--text-color);
@@ -27,7 +27,7 @@ header {
     width: 95%;
     margin: 0 auto;
 }
-.display {
+.message-history {
     flex: 0 1 80%; 
     background-color: var(--background-color);
     color: var(--text-color);
