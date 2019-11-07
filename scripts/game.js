@@ -1,14 +1,20 @@
-const ANSWERS = {TOO_SMALL: 'too small', TOO_BIG: 'too big', RIGHT: 'right'};
+const ANSWERS = {TOO_SMALL: 'too small', TOO_BIG: 'too big', RIGHT: 'right', INVALID: 'invalid'};
+const FROM = 1;
+const TO = 100;
 
-exports.start = (from, to) => {
-    return from + Math.floor(Math.random() * (to - from));
+exports.start = _ => {
+    return FROM + Math.floor(Math.random() * (TO - FROM));
 }
-exports.turn = (userNumber, guessNumber, tries) => {    
+exports.turn = (userNumber, guessNumber, tries) => {
     let gameTurn = {answer: ANSWERS.RIGHT, tries: tries + 1}
-    if (userNumber < guessNumber)
-        gameTurn.answer = ANSWERS.TOO_SMALL;
-    if (userNumber > guessNumber)
-        gameTurn.answer = ANSWERS.TOO_BIG;
+    if (userNumber < FROM || userNumber >= TO)
+        gameTurn.answer = ANSWERS.INVALID;
+    else {
+        if (userNumber < guessNumber)
+            gameTurn.answer = ANSWERS.TOO_SMALL;
+        if (userNumber > guessNumber)
+            gameTurn.answer = ANSWERS.TOO_BIG;
+    }
     return gameTurn;
 }
 exports.allAnswers = _ => ANSWERS;
