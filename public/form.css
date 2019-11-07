@@ -1,14 +1,23 @@
 .answer-form {
     padding: 0;
+    margin-bottom: 1rem;
 }
 .answer-form > * {
+    box-sizing: border-box;
     width: 100%;
-    margin: 0.2rem 0; 
-    border: 1px;
+    margin: 0.2rem 0;
     font-family: "PT Serif", serif;
     line-height: 1.4;
     font-size: 1rem;
 }
 .answer-form__message {
     resize: none;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    padding: 5px;
+}
+.answer-form__button {
+    background-color: var(--background-color);
+    color: var(--server-message-color);
 }
