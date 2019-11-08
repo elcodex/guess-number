@@ -1,7 +1,4 @@
 const talk = require('./scripts/talk.js');
-
-const PORT = 80;
-
 const express = require('express');
 const consolidate = require('consolidate');
 const bodyParser = require('body-parser');
@@ -26,8 +23,12 @@ app.get('/', (req, res) => res.render('index.html'));
 app.post('/', function(req, res) {
     if (!req.session.userId) req.session.userId = req.session.id;
     const answer = talk.getServerAnswer(req);
-    console.log(req.body.message, answer);
+    //console.log(req.body.message, answer);
     res.send(answer);
 });
 
-app.listen(port, _ => console.log(`listening on port ${PORT}`));
+let port = process.env.PORT;
+if (!port || port === "") {
+    port = 3000;
+}
+app.listen(port, _ => console.log(`listening on port ${port}`));
