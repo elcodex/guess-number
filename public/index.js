@@ -1,4 +1,4 @@
-document.querySelector('.answer-form__message').value = "";
+//document.querySelector('.answer-form__message').value = "";
 
 document.querySelector('.answer-form__button').addEventListener('click', e => {
     e.preventDefault();
@@ -6,7 +6,7 @@ document.querySelector('.answer-form__button').addEventListener('click', e => {
 });
 
 document.querySelector('.answer-form__message').addEventListener('keypress', e => {
-    if (e.shiftKey && e.key === 'Enter') {
+    if (e.key === 'Enter') {
         e.preventDefault();
         displayAndPost();
     }
