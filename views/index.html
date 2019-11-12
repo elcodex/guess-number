@@ -2,11 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Guess game</title>
-        <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i&display=swap&subset=cyrillic" rel="stylesheet">
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="form.css">
         <link rel="stylesheet" href="display.css">
+        <title>Guess game</title>
     </head>
     <body>
         <div class="container">
@@ -23,8 +24,8 @@
             </div>
             <div class="user-inputs">
                 <form class="answer-form" method="post">
-                    <textarea class="answer-form__message" name="message" rows="2" autofocus></textarea>
-                    <button class="answer-form__button">Send <span class="button-hint">(Shift+Enter)</span></button>
+                    <input type="text" class="answer-form__message" autofocus autocomplete="off">
+                    <button class="answer-form__button">Send</button>
                 </form>
             </div>
         </div>
