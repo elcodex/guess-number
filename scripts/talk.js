@@ -5,7 +5,7 @@ const fs = require('fs');
 const serverAnswersData = fs.readFileSync('data/answers.json', 'utf-8');
 const serverAnswers = JSON.parse(serverAnswersData);
 
-const USER_COMMANDS = {HELLO: 'hello', START: 'start', END: 'end'};
+const USER_COMMANDS = {HELLO: 'hello', START: 'start', END: 'end', HELP: 'help'};
 const COMMAND_DEFAULT = 'do nothing';
 const COMMAND_NUMBER = 'number';
 
@@ -98,12 +98,15 @@ let executeCommand = (sessionId, commandNumber = 0) => {
 
     let executeDefaultCommand = () => ({template: serverAnswers.default});
     
+    let executeCommandHelp = () => ({template: serverAnswers.help});
+
     const answers = {};
     answers[USER_COMMANDS.HELLO] = executeCommandHello;
     answers[USER_COMMANDS.START] = executeCommandStart;
     answers[USER_COMMANDS.END] = executeCommandEnd;
     answers[COMMAND_NUMBER] = executeCommandNumber;
     answers[COMMAND_DEFAULT] = executeDefaultCommand;
+    answers[USER_COMMANDS.HELP] = executeCommandHelp;
     return answers;
 }
 
