@@ -9,7 +9,8 @@
   "prime": "My number is prime.",
   "divide by": "My number is divided by {{number}}",
   "not start yet": "I don't think of the number yet. Type 'start' to begin the game.",
-  "default": "...",
+  "default": "Unknown command. Try type 'help'.",
+  "help": "Commands:\n'hello' - to start talking with the server,\n'start' - to play a guess game,\n'end' - to end the current game,\n'help' - to see this message.", 
 
   "not prime": "Your number is not prime, but my is.",
   "odd": "My number is odd",
