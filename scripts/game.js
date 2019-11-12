@@ -2,9 +2,10 @@ const ANSWERS = {TOO_SMALL: 'too small', TOO_BIG: 'too big', RIGHT: 'right', INV
 const FROM = 1;
 const TO = 100;
 
-exports.start = _ => {
+exports.start = () => {
     return FROM + Math.floor(Math.random() * (TO - FROM));
 }
+
 exports.turn = (userNumber, guessNumber, tries) => {
     let gameTurn = {answer: ANSWERS.RIGHT, tries: tries + 1}
     if (userNumber < FROM || userNumber >= TO)
@@ -17,7 +18,8 @@ exports.turn = (userNumber, guessNumber, tries) => {
     }
     return gameTurn;
 }
-exports.allAnswers = _ => ANSWERS;
+
+exports.allAnswers = () => ANSWERS;
 
 exports.isPrime = (number) => {
     for (let d = 2; d <= Math.floor(Math.sqrt(number)); d++) {
@@ -28,10 +30,11 @@ exports.isPrime = (number) => {
     return true;
 }
 exports.isEven = number => number % 2 === 0;
+
 exports.dividedBy = number => {
     let dividers = [];
     for (let d = 2; d < number; d++) {
-        if (this.isPrime(d) && number % d === 0) {
+        if (number % d === 0) {
             dividers.push(d);
         }
     }
