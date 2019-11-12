@@ -14,12 +14,14 @@
             <header></header>
             <div class="message-history">
                 <ul class="message-history__list">
-                    <li class="message-history__server-message">
-                        <span class="message__author">server</span>: 
+                    {{#each messages ~}}
+                      <li class="message-history__{{from}}-message">
+                        <span class="message__author">{{author}}</span>: 
                         <span class="message__text">
-                            Hello! Type 'hello' to start conversation with server.
+                            {{text}}
                         </span>
                     </li>
+                    {{~/each}}
                 </ul>
             </div>
             <div class="user-inputs">

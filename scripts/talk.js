@@ -16,56 +16,58 @@ let extractCommandFromRequest = request => {
         return {command};
 
     const number = Number(command);
-    if (!isNaN(number))
+    if (number && !isNaN(number))
         return {command: COMMAND_NUMBER, number};
 
     return {command: COMMAND_DEFAULT};
 }
+
 let executeCommand = (sessionId, commandNumber = 0) => {
-    let executeCommandHello = _ => {
+    let executeCommandHello = () => {
         gameStore.addKey(sessionId);
-        return serverAnswers.hello;
+        return {template: serverAnswers.hello};
     }
-    let executeCommandStart = _ => {
+    let executeCommandStart = () => {
         const number = game.start();
         gameStore.addParam(sessionId, {key: 'number', value: number});
         gameStore.addParam(sessionId, {key: 'tries', value: 0});
-        return serverAnswers.start;
+        return {template: serverAnswers.start};
     }
-    let executeCommandEnd = _ => {
+    let executeCommandEnd = () => {
         let answer = serverAnswers['not start yet'];
+        let data = {};
         if (gameStore.getParam(sessionId, 'number')) {
             const gameResults = {
                 number: gameStore.getParam(sessionId, 'number'),
                 tries: gameStore.getParam(sessionId, 'tries'),
             }
             gameStore.clearKey(sessionId);
-            answer = serverAnswers.end[0] + gameResults.number;
-            answer += serverAnswers.end[1];
+            answer = serverAnswers.end;
+            data = {number: gameResults.number};
         }
-        return answer;
+        return {template: answer, data};
     }
-    let executeCommandNumber = _ => {
+    let executeCommandNumber = () => {
         let tries = gameStore.getParam(sessionId, 'tries');
         const guessNumber = gameStore.getParam(sessionId, 'number');
         
         if (!guessNumber) 
-            return serverAnswers['not start yet'];
+            return {template: serverAnswers['not start yet']};
 
         const gameAnswer = game.turn(commandNumber, guessNumber, tries);
         gameStore.addParam(sessionId, {key: 'tries', value: gameAnswer.tries});
         tries = gameStore.getParam(sessionId, 'tries');
 
         let answer = '';
-        
+        let data = {};
         if (gameAnswer.answer === game.allAnswers().INVALID) {
-            return serverAnswers['out of range'];
+            return {template: serverAnswers['out of range']};
         }
 
         if (gameAnswer.answer === game.allAnswers().RIGHT) {
             gameStore.clearKey(sessionId);
             answer = serverAnswers['right'];
-            answer += '\r\nTries: ' + tries + '. Number: ' + guessNumber;
+            data = {tries, number: guessNumber};
         }
         else {
             if (tries % 2 === 0) {
@@ -80,7 +82,8 @@ let executeCommand = (sessionId, commandNumber = 0) => {
                     !gameStore.getParam(sessionId, 'isPrime')) {
                     
                     const divider = game.dividedBy(guessNumber);
-                    answer = serverAnswers['divide by'] + divider.toString() + '\r\n';
+                    answer = serverAnswers['divide by'] + '\r\n';
+                    data = {number: divider};
                 }
             }
             if (gameAnswer.answer === game.allAnswers().TOO_SMALL) {
@@ -90,9 +93,10 @@ let executeCommand = (sessionId, commandNumber = 0) => {
                 answer += serverAnswers['too big'];
             }
         }
-        return answer;
+        return {template: answer, data};
     }
-    let executeDefaultCommand = _ => serverAnswers.default;
+
+    let executeDefaultCommand = () => ({template: serverAnswers.default});
     
     const answers = {};
     answers[USER_COMMANDS.HELLO] = executeCommandHello;

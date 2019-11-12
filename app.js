@@ -1,13 +1,15 @@
 const talk = require('./scripts/talk.js');
+
 const express = require('express');
 const consolidate = require('consolidate');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const handlebars = require('handlebars');
 
 const app = express();
 
 app.engine('html', consolidate.handlebars);
-app.set('view engine', 'handlebars');
+app.set('view engine', 'html');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -18,17 +20,23 @@ app.use(session({
     saveUninitialized: false,
 }));
 
-app.get('/', (req, res) => res.render('index.html'));
+app.get('/', (req, res) => {
+    const messages = [{from: "server", author: "server", text: "Hello!"}];
+    res.render('index', {messages});
+});
 
 app.post('/', function(req, res) {
     if (!req.session.userId) req.session.userId = req.session.id;
+    
     const answer = talk.getServerAnswer(req);
-    //console.log(req.body.message, answer);
-    res.send(answer);
+    const answerTemplate = handlebars.compile(answer.template);
+    const renderedAnswer = answerTemplate(answer.data);
+    
+    res.send(renderedAnswer);
 });
 
 let port = process.env.PORT;
-if (!port || port === "") {
+if (!port) {
     port = 3000;
 }
 app.listen(port, _ => console.log(`listening on port ${port}`));

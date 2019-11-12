@@ -1,18 +1,19 @@
 {
-  "hello": "Hello! Let's play a game. I think of the number from 1 to 99 and you try to guess it.\nTo start the game type 'start'.",
+  "hello": "Hello! Let's play a game. I'll think of the number from 1 to 99 and you try to guess it.\nTo start the game type 'start'.",
   "start": "I've thought of the number from 1 to 99. Now you type your guess and i will give you some hints.",
   "too small": "Your number is smaller than my number.",
   "too big": "Your guess is too big. Try another number.",
-  "right": "You got it! Congrats!",
-  "end": ["Ok. The number was ", "\nLet's try again."],
+  "right": "You got it! Congrats!\nTries: {{tries}}, number: {{number}}",
+  "end": "Ok. The number was {{number}}.\nLet's try again.",
   "out of range": "The number is from 1 to 99. Try another one.",
   "prime": "My number is prime.",
-  "not prime": "Your number is not prime, but my is",
+  "divide by": "My number is divided by {{number}}",
+  "not start yet": "I don't think of the number yet. Type 'start' to begin the game.",
+  "default": "...",
+
+  "not prime": "Your number is not prime, but my is.",
   "odd": "My number is odd",
   "not odd": "Your number is not odd",
   "even": "My number is even",
-  "not even": "Your number is not even",
-  "divide by": "My number is divided by ",
-  "not start yet": "I don't think of the number yet. Type 'start' to begin the game.",
-  "default": "..."
+  "not even": "Your number is not even"
 }
