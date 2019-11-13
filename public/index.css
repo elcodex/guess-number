@@ -4,7 +4,7 @@ html, body {
 }
 html {
     height: 100%;
-    font-size: 20px;
+    font-size: 24px;
 }
 body {
     --background-color: hsl(0, 0%, 10%); 
@@ -37,7 +37,7 @@ header {
 }
 @media screen and (min-width: 1000px) {
     html {
-        font-size: 20px;
+        font-size: 24px;
     }
     .container {
         width: 1000px;
