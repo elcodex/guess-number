@@ -20,8 +20,15 @@ app.use(session({
     saveUninitialized: false,
 }));
 
+handlebars.registerHelper('addNewLines', (text) => {
+    text = handlebars.Utils.escapeExpression(text);
+    text = text.replace(/\n|\r\n|\r/g, "<br>");
+    return new handlebars.SafeString(text);
+})
+
 app.get('/', (req, res) => {
-    const messages = [{from: "server", author: "server", text: "Hello!"}];
+    if (!req.session.userId) req.session.userId = req.session.id;
+    const messages = talk.getHistoryMessages(req);
     res.render('index', {messages});
 });
 
