@@ -116,3 +116,14 @@ exports.getServerAnswer = request => {
 
     return executeCommand(sessionId, userCommand.number)[userCommand.command](); 
 }
+
+exports.getHistoryMessages = request => {
+    const sessionId = request.session.userId;
+    const startMessage = {from: 'server', author: 'server', text: serverAnswers.help};
+    let messages = gameStore.getParam(sessionId, 'history') || [];
+    if (messages.length === 0) {
+        messages.push(startMessage);
+    }
+
+    return messages;
+}
