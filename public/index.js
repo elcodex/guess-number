@@ -1,13 +1,20 @@
-//document.querySelector('.answer-form__message').value = "";
-
 document.querySelector('.answer-form__button').addEventListener('click', e => {
     e.preventDefault();
+    displayAndPost();
+});
+document.querySelector('.answer-form__button').addEventListener('touch', e => {
+    e.preventDefault();
+    e.target.classList.add('active');
+    setTimeout(() => e.target.classList.remove('active'), 100);
     displayAndPost();
 });
 
 document.querySelector('.answer-form__message').addEventListener('keypress', e => {
     if (e.key === 'Enter') {
         e.preventDefault();
+        let formButton = document.querySelector('.answer-form__button');
+        formButton.classList.add('active');
+        setTimeout(() => formButton.classList.remove('active'), 100);
         displayAndPost();
     }
 })
