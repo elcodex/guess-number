@@ -2,6 +2,8 @@
     padding: 0;
     margin-bottom: 1rem;
     display: flex;
+    gap: 0.5rem;
+    border-top: 0.1px solid var(--server-message-color);
 }
 .answer-form > * {
     box-sizing: border-box;
@@ -12,26 +14,27 @@
     font-size: 1rem;
     min-height: 48px;
     padding: 0.5rem;
+    border: none;
 }
 .answer-form__message {
     background-color: var(--background-color);
     color: var(--text-color);
-    border: 0.1px solid var(--text-color);
+    border-bottom: 0.1px solid var(--text-color);
+    padding-bottom: 0;
     flex: 5 1 70%;
     min-width: 70%;
 }
 .answer-form__button {
-    background-color: var(--background-color);
-    color: var(--server-message-color);
-    border: 0.1px solid var(--text-color);
     cursor: pointer; 
-    flex: 1 1 15%;   
+    background-color: var(--background-color);
+    color: var(--text-color);
+    /*border: 0.1px solid var(--text-color);
+    
+    flex: 1 1 15%;   */
 }
-.answer-form__button:active {
+.answer-form__button:active, 
+.answer-form__button:focus, 
+.active {
     background-color: var(--server-message-color);
     color: var(--background-color);
-}
-.button-hint {
-    font-style: italic;
-    color: hsla(160, 100%, 40%, 0.5);
 }
