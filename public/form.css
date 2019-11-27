@@ -23,18 +23,26 @@
     padding-bottom: 0;
     flex: 5 1 70%;
     min-width: 70%;
+    margin-right: 0.5rem;
 }
+
+.answer-form__message:focus {
+    border-bottom: 3px solid var(--text-color);
+   /* box-shadow: 0px 2px 3px -3px var(--text-color);*/
+}
+
 .answer-form__button {
     cursor: pointer; 
+    background-color: var(--text-color);
+    color: var(--background-color);
+    border: 2px solid var(--text-color);
+}
+.answer-form__button:active,
+.active {
     background-color: var(--background-color);
     color: var(--text-color);
-    /*border: 0.1px solid var(--text-color);
-    
-    flex: 1 1 15%;   */
 }
-.answer-form__button:active, 
-.answer-form__button:focus, 
-.active {
-    background-color: var(--server-message-color);
-    color: var(--background-color);
+
+.answer-form__message:focus, .answer-form__button:focus {
+    outline-color: var(--background-color);
 }
