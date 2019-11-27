@@ -47,7 +47,7 @@ let displayMessage = (text, from) => {
 
     let textTag = document.createElement('span');
     textTag.classList.add('message__text');
-    textTag.innerText = text;
+    textTag.innerHTML = text;
 
     let messageContainer = document.createElement('li');
     messageContainer.classList.add(`message-history__${from}-message`);

@@ -23,3 +23,9 @@
     text-decoration: underline;
     font-weight: bold;
 }
+
+.highlighted {
+    background-color: var(--server-message-color);
+    color: var(--background-color);
+    padding: 0 0.3rem;
+}
