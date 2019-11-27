@@ -13,7 +13,7 @@ body {
     height: 100%;
     background-color: var(--background-color);
     color: var(--text-color);
-    font-family: "PT Serif", serif;
+    font-family: "PT Sans", "Segoe UI", "Verdana", "Helvetica", sans;
     line-height: 1.4;
 }
 header {

@@ -9,7 +9,7 @@
     box-sizing: border-box;
     display: block;
     margin: 0.2rem 0;
-    font-family: "PT Serif", serif;
+    font-family: "PT Sans", "Segoe UI", "Verdana", "Helvetica", sans;
     line-height: 1.4;
     font-size: 1rem;
     min-height: 48px;
